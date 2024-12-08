@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}Cart Page{% endblock %}
+
+
+
+{% block content %}
+<div class="cart_container">
+    <div class="products">
+        {% if cart_items %}
+            {% for cart_item in cart_items %}
+            <div class="cart_item">
+                <div class="item_image">
+                    <img src="{{ cart_item.biryani.image.url }}" alt="{{ cart_item.biryani.name }}" style="height: 100%; width: 100%;">
+                </div>
+                <div class="item_data">
+                    <div class="item_name"><h1>{{ cart_item.biryani.name }}</h1></div>
+                    <div class="item_price">
+                        <div class="ofprice">
+                            <h1>₹ {{ cart_item.total_price|floatformat:2 }}</h1>
+                            <h4>Quantity: {{ cart_item.quantity }}</h4>
+                        </div>
+                        <div class="ogprice">
+                            <h4>M.R.P: <s>₹ {{ cart_item.mrp_total|floatformat:2 }}</s> ({{ cart_item.biryani.discount }}% off)</h4>
+                        </div>
+                    </div>
+                    <div class="item_description"><p>{{ cart_item.biryani.description }}</p></div>
+                </div>
+                <div class="item_delete">
+                    <form action="{% url 'remove_from_cart' cart_item.biryani.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" style="background: none; border: none;">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="red">
+                                <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <h1>Your cart is empty.</h1>
+        {% endif %}
+    </div>
+
+    <div class="bill">
+        <h1 style="margin-bottom: 20px;">Price Details</h1>
+        <div class="details">
+            <table border="0" width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td>Items Price</td>
+                    <td style="text-align: right;">₹{{ total_mrp|floatformat:2 }}</td>
+                </tr>
+                <tr>
+                    <td>Discount</td>
+                    <td style="text-align: right; color: green;">-₹{{ total_discount|floatformat:2 }}</td>
+                </tr>
+                <tr>
+                    <td>Platform Fee</td>
+                    <td style="text-align: right;">₹{{ platform_fee }}</td>
+                </tr>
+                <tr>
+                    <td>Delivery Charges</td>
+                    <td style="text-align: right;">₹{{ delivery_charges|floatformat:2 }}</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 20px;">Total</td>
+                    <td style="text-align: right; font-size: 20px;">₹{{ final_total|floatformat:2 }}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="place_order">
+
+            <form method="POST" action="{% url 'place_order' %}">
+                {% csrf_token %}
+                <div class="address_selection">
+                    <select name="address" required style="width:380px;margin-top:10px;height:30px">
+                        <option value="" disabled selected>Select an address</option>
+                        {% for address in request.user.addresses.all %}
+                            <option value="{{ address.id }}">
+                                {{ address.fullname }}, {{ address.doorno }},
+                                {{ address.area }}, {{ address.city }},
+                                {{ address.state }} - {{ address.pincode }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+    
+                <button type="submit">Place Order</button>
+            </form>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

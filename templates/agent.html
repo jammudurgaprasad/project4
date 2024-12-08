@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Agent Orders{% endblock %}
+
+{% block content %}
+<div class="agent_container">
+    <h2>Pending Orders</h2>
+    
+    {% if orders %}
+        <div class="orders_list">
+            {% for order in orders %}
+            <div class="order_item">
+                <h3>Order ID: {{ order.id }}</h3>
+                <div class="order_details">
+                    <p>Biryani: {{ order.biryani.name }}</p>
+                    <p>Quantity: {{ order.quantity }}</p>
+                    <p>Total Price: ₹{{ order.total_price|floatformat:2 }}</p>
+                    <p>Status: {{ order.status }}</p>
+                    <p>Address: {{ order.address.fullname }}, {{ order.address.city }}</p>
+                </div>
+                <div class="order_actions">
+                    {% if order.status == 'Pending' %}
+                    <form method="POST" action="{% url 'deliver_order' order.id %}">
+                        {% csrf_token %}
+                        <button type="submit">Mark as Delivered</button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No pending orders at the moment.</p>
+    {% endif %}
+</div>
+{% endblock %}

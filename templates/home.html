@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Home Page{% endblock %}
+
+{% block content %}
+<h2 style="margin-top: 10px;">What's on your mind?</h2>
+
+
+<div class="menu-container">
+    <div class="menu">
+
+        <div class="menu-item">
+            <button onclick="scrollToCategoryByName('Biryani')">
+            <div class="item_image">
+                <img src="{% static 'menu/pot biryani.jpg' %}" alt="Food 1">
+            </div>
+            <p><strong>Biryani</strong></p>
+            </button>
+        </div>
+
+        <div class="menu-item">
+            <button onclick="scrollToCategoryByName('Veg_Starters')">
+            <div class="item_image">
+                <img src="{% static 'menu/mushroom 65.jpg' %}" alt="Food 1">
+            </div>
+            <p><strong>Veg Starters</strong></p>
+            </button>
+        </div>
+
+        <div class="menu-item">
+            <button onclick="scrollToCategoryByName('Nonveg_Starters')">
+            <div class="item_image">
+                <img src="{% static 'menu/chicken-manchurian.jpg' %}" alt="Food 1">
+            </div>
+            <p><strong>Non-Veg Starters</strong></p>
+            </button>
+        </div>
+
+        <div class="menu-item">
+            <button onclick="scrollToCategoryByName('Veg_Curries')">
+            <div class="item_image">
+                <img src="{% static 'menu/Paneer-Butter-Masala-1-2.jpg' %}" alt="Food 1">
+            </div>
+            <p><strong>Veg Curries</strong></p>
+            </button>
+        </div>
+
+        <div class="menu-item">
+            <button onclick="scrollToCategoryByName('Nonveg_Curries')">
+            <div class="item_image">
+                <img src="{% static 'menu/Andhra-Chicken-Curry-2-3.jpg' %}" alt="Food 1">
+            </div>
+            <p><strong>Non-Veg Curries</strong></p>
+            </button>
+        </div>
+
+        <div class="menu-item">
+            <button onclick="scrollToCategoryByName('Fried_Rice')">
+            <div class="item_image">
+                <img src="{% static 'menu/paneer-fried-rice-featured.jpg' %}" alt="Food 1">
+            </div>
+            <p><strong>Fried Rices</strong></p>
+            </button>
+        </div>
+
+        <div class="menu-item">
+            <button onclick="scrollToCategoryByName('Tandoori')">
+            <div class="item_image">
+                <img src="{% static 'menu/Tandoori-Half.jpg' %}" alt="Food 1">
+            </div>
+            <p><strong>Tandoori</strong></p>
+            </button>
+        </div>
+
+
+
+    </div>
+</div>
+
+
+{% for category, items in categories.items %}
+<div class="line"></div>
+    <h1 style="margin-top: 20px;padding-top:70px;" id="item-title">{{ category|title }}</h1>
+    <div class="biryani">
+        {% for item in items %}
+        <div class="bmain">
+            <div class="bimage"><img src="{{ item.image.url }}" alt="{{ item.name }}"></div>
+            <div class="bdata">
+                <div class="bname"><h3>{{ item.name }}</h3></div>
+                <div class="bprice">
+                    <div class="ofprice"><h1>₹ {{ item.final_price|floatformat:2 }}</h1></div>
+                    <div class="ogprice"><h4>M.R.P:<s>₹ {{ item.price|floatformat:2 }}</s> ({{ item.discount }}% off)</h4></div>
+                </div>
+                <div class="bdesc"><p>{{ item.description }}</p></div>
+                <div class="baddtocart">
+                    <form action="{% url 'add_to_cart' item.id %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button class="addtocart" type="submit"><strong>Add to Cart</strong> </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endfor %}
+
+
+
+
+<footer style="margin-top: 50px; padding: 30px; background-color: #d9534f; color: #fff; text-align: center; border-top: 2px solid #c9302c; font-family: Arial, sans-serif;">
+    <h3 style="font-size: 24px; margin-bottom: 10px;">Contact Us</h3>
+    <p style="font-size: 16px; margin-bottom: 20px;">We’d love to hear from you! Feel free to reach out with any questions, feedback, or suggestions.</p>
+
+    <div style="margin-bottom: 20px;">
+        <h4 style="font-size: 20px; margin-bottom: 8px;">📍 Visit Us</h4>
+        <p style="margin: 0; font-size: 16px; line-height: 1.5;">
+            DP's Kitchen,<br>Main Road, Cheepurupalli,<br>Vizianagaram, Andhra Pradesh - 535-128
+        </p>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+        <h4 style="font-size: 20px; margin-bottom: 8px;">📞 Call Us</h4>
+        <p style="margin: 0; font-size: 16px; line-height: 1.5;">
+            Phone: +91 63024 37147<br>Support: +91 11122 23344
+        </p>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+        <h4 style="font-size: 20px; margin-bottom: 8px;">📧 Email Us</h4>
+        <p style="margin: 0; font-size: 16px; line-height: 1.5;">
+            General Inquiries: <a href="mailto:info@dpskitchen.com" style="color: #fff; text-decoration: underline;">info@dpskitchen.com</a><br>
+            Support: <a href="mailto:support@dpskitchen.com" style="color: #fff; text-decoration: underline;">support@dpskitchen.com</a>
+        </p>
+    </div>
+</footer>
+
+
+
+
+
+{% endblock %}

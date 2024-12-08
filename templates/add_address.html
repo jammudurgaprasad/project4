@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Home Page{% endblock %}
+
+{% block content %}
+
+<div class="profile_container">
+    <div class="p1">
+        <div class="profile_image">
+            <img src="{% static 'profile.png' %}" style="height:100%;width:100%;" alt="Profile Image">
+        </div>
+        <div class="edit_name">
+            <div class="profile_name"><h3>{{ user.username }}</h3></div>
+            {% comment %} <div class="profile_edit"><h2>#</h2></div> {% endcomment %}
+        </div>
+        <div class="profile_orders"><button class="profile_orders1" onclick="window.location.href='{% url 'orders_page' %}'"><h3>Orders</h3></button></div>
+        <div class="profile_address"><button class="profile_address1" onclick="window.location.href='{% url 'addresses' %}'"><h3>Addresses</h3></button></div>
+    </div>
+    <div class="p2">
+        <form method="post" class="add_form">
+            {% csrf_token %}
+            <label for="fullname">Full Name:</label>
+            <input type="text" name="fullname" required>
+    
+            <label for="doorno">Door No:</label>
+            <input type="text" name="doorno" required>
+    
+            <label for="area">Area:</label>
+            <input type="text" name="area" required>
+    
+            <label for="city">City:</label>
+            <input type="text" name="city" required>
+    
+            <label for="state">State:</label>
+            <input type="text" name="state" required>
+    
+            <label for="pincode">Zip Code:</label>
+            <input type="text" name="pincode" required>
+            
+            <label for="phone">Phone:</label>
+            <input type="text" name="phone" required>
+            
+            <button type="submit" class="add_address_button"><strong>Add Address</strong></button>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home Page{% endblock %}
+
+{% block content %}
+
+<div class="profile_container">
+    <div class="p1">
+        <div class="profile_image">
+            <img src="{% static 'profile.png' %}" style="height:100%;width:100%;" alt="Profile Image">
+        </div>
+        <div class="edit_name">
+            <div class="profile_name"><h3>{{ user.username }}</h3></div>
+            {% comment %} <div class="profile_edit"><h2>#</h2></div> {% endcomment %}
+        </div>
+        <div class="profile_orders"><button class="profile_orders1" onclick="window.location.href='{% url 'orders_page' %}'"><h3>Orders</h3></button></div>
+        <div class="profile_address"><button class="profile_address1" onclick="window.location.href='{% url 'addresses' %}'"><h3>Addresses</h3></button></div>
+    </div>
+    <div class="p2">
+        <h1>Welcome {{ user.username }}</h1>
+    </div>
+</div>
+{% endblock %}

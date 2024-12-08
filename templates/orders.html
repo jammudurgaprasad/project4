@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Home Page{% endblock %}
+
+{% block content %}
+
+<div class="profile_container">
+    <div class="p1">
+        <div class="profile_image">
+            <img src="{% static 'profile.png' %}" style="height:100%;width:100%;" alt="Profile Image">
+        </div>
+        <div class="edit_name">
+            <div class="profile_name"><h3>{{ user.username }}</h3></div>
+            {% comment %} <div class="profile_edit"><h2>#</h2></div> {% endcomment %}
+        </div>
+        <div class="profile_orders"><button class="profile_orders1" onclick="window.location.href='{% url 'orders_page' %}'"><h3>Orders</h3></button></div>
+        <div class="profile_address"><button class="profile_address1" onclick="window.location.href='{% url 'addresses' %}'"><h3>Addresses</h3></button></div>
+    </div>
+    <div class="p2">
+        
+        
+
+        <div class="my_orders">
+            {% for order in orders %}
+            <div class="each_order">
+                <div class="my_image">
+                    <img src="{{ order.biryani.image.url }}" alt="{{ order.biryani.name }}" style="height: 100%; width: 100%;">
+                </div>
+                <div class="my_details">
+                    <h2>{{ order.biryani.name }}</h2>
+                    <!-- Display final price -->
+                    <h3>₹ {{ order.total_price|floatformat:2 }}</h3>
+                    <!-- Display original price (M.R.P.) with discount percentage -->
+                    <h5>
+                        <s>₹ {{ order.biryani.price|floatformat:2 }}</s>  <!-- Original M.R.P. -->
+                        ({{ order.biryani.discount }}% Off)
+                    </h5>
+                    <!-- Description of the item -->
+                    <p>{{ order.biryani.description }}</p>
+                </div>
+
+
+                <div class="order_address">
+                    <h4>Delivery Address</h4>
+                    <p>
+                        <strong>{{ order.address.fullname }}</strong><br>
+                        {{ order.address.doorno }}, {{ order.address.area }}<br>
+                        {{ order.address.city }}, {{ order.address.state }} - {{ order.address.pincode }}<br>
+                        Phone: {{ order.address.phone }}
+                    </p>
+                </div>
+                
+
+        
+                <div class="order_cancel">
+                    {% if order.status == 'Pending' %}
+                    <form method="POST" action="{% url 'cancel_order' order.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="cancel_order_btn"><strong>Cancel</strong></button>
+                    </form>
+                    {% endif %}
+                </div>
+        
+                <div class="order_status">
+                    <h4>Status</h4>
+                    <h2>{{ order.status }}</h2>  <!-- Displays either "Pending" or "Cancelled" -->
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+
+
+
+            
+
+
+        </div>
+
+
+        
+    </div>
+</div>
+{% endblock %}
