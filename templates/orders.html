@@ -23,9 +23,15 @@
         <div class="my_orders">
             {% for order in orders %}
             <div class="each_order">
-                <div class="my_image">
+                {% comment %} <div class="my_image">
                     <img src="{{ order.biryani.image.url }}" alt="{{ order.biryani.name }}" style="height: 100%; width: 100%;">
-                </div>
+                </div> {% endcomment %}
+                {% if order.status != 'Pending' %}
+    <div class="my_image">
+        <img src="{{ order.biryani.image.url }}" alt="{{ order.biryani.name }}" style="height: 100%; width: 100%;">
+    </div>
+{% endif %}
+
                 <div class="my_details">
                     <h2>{{ order.biryani.name }}</h2>
                     <!-- Display final price -->

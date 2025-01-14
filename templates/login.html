@@ -67,10 +67,10 @@
                 <input type="password" id="password" name="password" required>
             </div>
             {% if messages %}
-                <div class="alert alert-danger" style="color: red;">
-                    
-                        <p>{{ message }}</p>
-                    
+                <div class="alert">
+                    {% for message in messages %}
+                        <p style="color:red;">{{ message }}</p>
+                    {% endfor %}
                 </div>
             {% endif %}
             <input type="submit" value="Login">
